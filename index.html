@@ -84,24 +84,119 @@
   .hero{
     position:relative;min-height:100vh;
     padding:140px 48px 80px;
-    display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;
+    display:flex;align-items:center;
     overflow:hidden;
   }
+  .hero-copy{position:relative;z-index:2;max-width:900px;width:100%}
   .hero-bg{
-    position:absolute;inset:0;pointer-events:none;overflow:hidden;
-  }
-  .hero-bg::before{
-    content:"";position:absolute;top:-10%;left:-10%;width:60%;height:80%;
-    background:radial-gradient(ellipse at center, rgba(255,87,34,.18), transparent 60%);
-    filter:blur(40px);
-  }
-  .hero-bg::after{
-    content:"";position:absolute;top:0;right:-20%;width:70%;height:100%;
-    background:radial-gradient(ellipse at center, rgba(100,180,255,.06), transparent 60%);
-    filter:blur(60px);
+    position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;
   }
 
-  .hero-copy{position:relative;z-index:2}
+  /* Soft drifting glow orbs */
+  .hero-bg::before{
+    content:"";position:absolute;top:-10%;left:-10%;width:55%;height:80%;
+    background:radial-gradient(ellipse at center, rgba(255,87,34,.18), transparent 60%);
+    filter:blur(50px);
+    animation:orbDrift1 14s ease-in-out infinite;
+  }
+  .hero-bg::after{
+    content:"";position:absolute;top:10%;right:-15%;width:55%;height:85%;
+    background:radial-gradient(ellipse at center, rgba(100,180,255,.1), transparent 60%);
+    filter:blur(50px);
+    animation:orbDrift2 18s ease-in-out infinite;
+  }
+  @keyframes orbDrift1{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(120px,60px) scale(1.2)}
+  }
+  @keyframes orbDrift2{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(-80px,50px) scale(1.1)}
+  }
+
+  /* Extra pulsing glow (new) */
+  .hero-glow{
+    position:absolute;top:40%;left:30%;width:500px;height:500px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,87,34,.12), transparent 60%);
+    filter:blur(60px);
+    animation:glowPulse 8s ease-in-out infinite;
+  }
+  @keyframes glowPulse{
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.4}
+    50%{transform:translate(-50%,-50%) scale(1.25);opacity:.75}
+  }
+
+  /* Conic rotating gradient (subtle but visible) */
+  .hero-conic{
+    position:absolute;top:50%;right:-20%;width:800px;height:800px;
+    background:conic-gradient(from 0deg, transparent 0%, rgba(255,87,34,.05) 20%, transparent 40%, rgba(100,180,255,.04) 60%, transparent 80%, rgba(255,87,34,.05) 100%);
+    border-radius:50%;filter:blur(30px);
+    transform:translateY(-50%);
+    animation:conicSpin 30s linear infinite;
+  }
+  @keyframes conicSpin{to{transform:translateY(-50%) rotate(360deg)}}
+
+  /* Animated grid pattern */
+  .hero-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse 85% 75% at 50% 50%, black 15%, transparent 90%);
+    -webkit-mask-image:radial-gradient(ellipse 85% 75% at 50% 50%, black 15%, transparent 90%);
+    animation:gridShift 20s linear infinite;
+  }
+  @keyframes gridShift{to{background-position:60px 60px}}
+
+  /* Diagonal scanning beam - brighter */
+  .hero-beam{
+    position:absolute;top:-50%;left:-100%;width:200%;height:200%;
+    background:linear-gradient(115deg,
+      transparent 42%,
+      rgba(255,138,80,.1) 48%,
+      rgba(255,180,120,.28) 50%,
+      rgba(255,138,80,.1) 52%,
+      transparent 58%);
+    animation:beam 7s cubic-bezier(.4,0,.6,1) infinite;
+  }
+  @keyframes beam{
+    0%{transform:translateX(-50%)}
+    100%{transform:translateX(50%)}
+  }
+
+  /* Decorative floating mini-charts - more visible */
+  .hero-chart{
+    position:absolute;opacity:.28;color:var(--accent-2);
+  }
+  .hero-chart.c1{top:14%;right:8%;width:170px;animation:floatY 10s ease-in-out infinite}
+  .hero-chart.c2{bottom:22%;right:24%;width:130px;animation:floatY 12s ease-in-out infinite;animation-delay:-3s}
+  .hero-chart.c3{top:56%;right:4%;width:110px;animation:floatY 9s ease-in-out infinite;animation-delay:-5s}
+  @keyframes floatY{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-24px)}
+  }
+
+  /* Glowing particle dots - bigger, stronger glow */
+  .hero-dots{position:absolute;inset:0}
+  .hero-dots span{
+    position:absolute;width:5px;height:5px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 16px var(--accent), 0 0 4px #fff;
+    animation:dotPulse 2.4s ease-in-out infinite;
+  }
+  .hero-dots span:nth-child(1){top:24%;right:38%;animation-delay:0s}
+  .hero-dots span:nth-child(2){top:62%;right:12%;animation-delay:-.8s}
+  .hero-dots span:nth-child(3){bottom:26%;right:44%;animation-delay:-1.6s}
+  .hero-dots span:nth-child(4){top:40%;right:20%;animation-delay:-.4s;width:4px;height:4px}
+  .hero-dots span:nth-child(5){top:72%;right:28%;animation-delay:-2s;width:4px;height:4px}
+  .hero-dots span:nth-child(6){top:32%;right:52%;animation-delay:-1.2s;width:3px;height:3px}
+  @keyframes dotPulse{
+    0%,100%{opacity:.3;transform:scale(.8)}
+    50%{opacity:1;transform:scale(1.6)}
+  }
+
   .hero-eyebrow{
     display:inline-flex;align-items:center;gap:12px;
     font:500 11px 'JetBrains Mono',monospace;letter-spacing:2px;
@@ -269,9 +364,14 @@
   .stat-sub{font-size:12px;color:var(--text-dim)}
 
   /* ===== USP ===== */
-  .usp-section{padding:110px 48px;position:relative}
+  .usp-section{padding:110px 48px;position:relative;overflow:hidden}
+  .usp-section::before{
+    content:"";position:absolute;top:10%;left:-20%;width:50%;height:60%;
+    background:radial-gradient(ellipse at center, rgba(255,87,34,.06), transparent 60%);
+    filter:blur(60px);pointer-events:none;
+  }
   .section-intro{
-    max-width:1280px;margin:0 auto 64px;
+    max-width:1280px;margin:0 auto 64px;position:relative;
     display:grid;grid-template-columns:1fr 1.3fr;gap:60px;align-items:end;
   }
   .section-tag{
@@ -362,8 +462,13 @@
   .usp-shield span{font-size:12px;color:var(--text-dim);line-height:1.4}
 
   /* ===== TRADING PRODUCTS ===== */
-  .products-section{padding:110px 48px;position:relative}
-  .products-wrap{max-width:1280px;margin:0 auto}
+  .products-section{padding:110px 48px;position:relative;overflow:hidden}
+  .products-section::before{
+    content:"";position:absolute;top:20%;right:-15%;width:45%;height:55%;
+    background:radial-gradient(ellipse at center, rgba(255,87,34,.05), transparent 60%);
+    filter:blur(50px);pointer-events:none;
+  }
+  .products-wrap{max-width:1280px;margin:0 auto;position:relative}
   .products-head{
     display:grid;grid-template-columns:1.3fr 1fr;gap:60px;
     align-items:end;margin-bottom:48px;
@@ -450,8 +555,15 @@
     background:var(--bg-1);
     border-top:1px solid var(--line);
     border-bottom:1px solid var(--line);
+    position:relative;overflow:hidden;
   }
-  .about-wrap{max-width:1280px;margin:0 auto}
+  .about-section::before{
+    content:"";position:absolute;top:-10%;left:50%;width:60%;height:60%;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, rgba(255,87,34,.06), transparent 60%);
+    filter:blur(80px);pointer-events:none;
+  }
+  .about-wrap{max-width:1280px;margin:0 auto;position:relative}
 
   .about-hero{
     display:grid;grid-template-columns:1.3fr 1fr;gap:80px;
@@ -662,7 +774,7 @@
 
   /* ===== RESPONSIVE ===== */
   @media (max-width:1000px){
-    .hero{grid-template-columns:1fr;gap:50px;padding:110px 32px 60px}
+    .hero{padding:110px 32px 60px}
     .section-intro{grid-template-columns:1fr;gap:24px}
     .env-features{grid-template-columns:repeat(2,1fr)}
     .env-feature{min-height:160px}
@@ -741,7 +853,47 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <div class="hero-conic"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-beam"></div>
+
+    <!-- floating mini candlestick charts -->
+    <svg class="hero-chart c1" viewBox="0 0 120 60" fill="none">
+      <line x1="10" y1="10" x2="10" y2="50" stroke="currentColor" stroke-width=".8"/>
+      <rect x="6" y="20" width="8" height="22" fill="currentColor"/>
+      <line x1="28" y1="8" x2="28" y2="48" stroke="currentColor" stroke-width=".8"/>
+      <rect x="24" y="14" width="8" height="18" fill="currentColor"/>
+      <line x1="46" y1="14" x2="46" y2="52" stroke="currentColor" stroke-width=".8"/>
+      <rect x="42" y="22" width="8" height="24" fill="currentColor"/>
+      <line x1="64" y1="4" x2="64" y2="40" stroke="currentColor" stroke-width=".8"/>
+      <rect x="60" y="10" width="8" height="20" fill="currentColor"/>
+      <line x1="82" y1="8" x2="82" y2="38" stroke="currentColor" stroke-width=".8"/>
+      <rect x="78" y="12" width="8" height="18" fill="currentColor"/>
+      <line x1="100" y1="2" x2="100" y2="34" stroke="currentColor" stroke-width=".8"/>
+      <rect x="96" y="6" width="8" height="22" fill="currentColor"/>
+    </svg>
+
+    <svg class="hero-chart c2" viewBox="0 0 100 40" fill="none">
+      <path d="M0,30 L15,24 L30,28 L45,18 L60,20 L75,10 L90,14 L100,6"
+            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="100" cy="6" r="3" fill="currentColor"/>
+    </svg>
+
+    <svg class="hero-chart c3" viewBox="0 0 80 50" fill="none">
+      <rect x="4" y="30" width="6" height="16" fill="currentColor" opacity=".5"/>
+      <rect x="16" y="22" width="6" height="24" fill="currentColor" opacity=".6"/>
+      <rect x="28" y="26" width="6" height="20" fill="currentColor" opacity=".7"/>
+      <rect x="40" y="14" width="6" height="32" fill="currentColor" opacity=".8"/>
+      <rect x="52" y="18" width="6" height="28" fill="currentColor" opacity=".9"/>
+      <rect x="64" y="8" width="6" height="38" fill="currentColor"/>
+    </svg>
+
+    <div class="hero-dots">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
 
   <div class="hero-copy">
     <div class="hero-eyebrow">
@@ -757,7 +909,6 @@
           <path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="btn-secondary">Trade Now</button>
     </div>
     <div class="hero-meta">
       <div class="hero-meta-item"><strong>35+</strong><span>Currency Pairs</span></div>
@@ -767,86 +918,7 @@
     </div>
   </div>
 
-  <div class="terminal" aria-hidden="true">
-    <div class="terminal-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="title">WETRADE · MARKETS</div>
-      <div class="status"><span class="pulse"></span>LIVE</div>
-    </div>
-
-    <div class="ticker-rows">
-      <div class="ticker-row">
-        <div class="sym">
-          <div class="sym-flag">€$</div>
-          <div class="sym-meta">
-            <div class="sym-name">EUR/USD</div>
-            <div class="sym-label">EURO / US DOLLAR</div>
-          </div>
-        </div>
-        <div class="price">1.08432</div>
-        <div class="change up">+0.24%</div>
-      </div>
-      <div class="ticker-row">
-        <div class="sym">
-          <div class="sym-flag">£$</div>
-          <div class="sym-meta">
-            <div class="sym-name">GBP/USD</div>
-            <div class="sym-label">POUND / US DOLLAR</div>
-          </div>
-        </div>
-        <div class="price">1.27541</div>
-        <div class="change up">+0.18%</div>
-      </div>
-      <div class="ticker-row">
-        <div class="sym">
-          <div class="sym-flag">$¥</div>
-          <div class="sym-meta">
-            <div class="sym-name">USD/JPY</div>
-            <div class="sym-label">US DOLLAR / YEN</div>
-          </div>
-        </div>
-        <div class="price">149.823</div>
-        <div class="change down">−0.11%</div>
-      </div>
-      <div class="ticker-row">
-        <div class="sym">
-          <div class="sym-flag">A$</div>
-          <div class="sym-meta">
-            <div class="sym-name">AUD/USD</div>
-            <div class="sym-label">AUSTRALIAN / US DOLLAR</div>
-          </div>
-        </div>
-        <div class="price">0.65420</div>
-        <div class="change up">+0.32%</div>
-      </div>
-    </div>
-
-    <div class="terminal-chart">
-      <div class="chart-head">
-        <div class="pair">EUR/USD <span>M15 · BID</span></div>
-        <div class="timeframes">
-          <span>1M</span><span>5M</span><span class="active">15M</span><span>1H</span><span>4H</span>
-        </div>
-      </div>
-      <svg class="chart-svg" viewBox="0 0 480 110" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="fillG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ff5722" stop-opacity=".32"/>
-            <stop offset="100%" stop-color="#ff5722" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <g stroke="rgba(255,255,255,.04)" stroke-width=".5">
-          <line x1="0" y1="25" x2="480" y2="25"/>
-          <line x1="0" y1="55" x2="480" y2="55"/>
-          <line x1="0" y1="85" x2="480" y2="85"/>
-        </g>
-        <path d="M0,80 L20,74 L40,78 L60,66 L80,62 L100,70 L120,58 L140,52 L160,58 L180,46 L200,42 L220,48 L240,38 L260,34 L280,40 L300,34 L320,28 L340,34 L360,24 L380,30 L400,22 L420,18 L440,26 L460,20 L480,24 L480,110 L0,110 Z" fill="url(#fillG)"/>
-        <path d="M0,80 L20,74 L40,78 L60,66 L80,62 L100,70 L120,58 L140,52 L160,58 L180,46 L200,42 L220,48 L240,38 L260,34 L280,40 L300,34 L320,28 L340,34 L360,24 L380,30 L400,22 L420,18 L440,26 L460,20 L480,24" stroke="#ff7a3d" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
-        <circle cx="480" cy="24" r="3" fill="#ff5722"/>
-        <line x1="0" y1="24" x2="480" y2="24" stroke="#ff5722" stroke-width=".5" stroke-dasharray="3 3" opacity=".4"/>
-      </svg>
-    </div>
-  </div>
+  <div class="terminal-removed" style="display:none"></div>
 </section>
 
 <!-- ===== STATS STRIP ===== -->
